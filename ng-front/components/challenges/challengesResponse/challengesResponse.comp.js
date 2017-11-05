@@ -1,10 +1,12 @@
 'use strict';
-function ChallengesResponseCtrl($state, UserService, config) {
+function ChallengesResponseCtrl($state, UserService, config, $log) {
 	let challengesResponseCtrl = this;
 
 	angular.extend(challengesResponseCtrl, {
-		personality: UserService.getPersonality()
-		
+		personalityInsight: UserService.getPersonality(),
+		log: function(message) {
+      		$log.debug(message);
+    	}
 	});
 }
 

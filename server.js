@@ -62,10 +62,14 @@ app.post("/api/visitors", function (request, response) {
   });
 });
 
+ app.get("/profile", function (request, response) {
+    response.json( require('./profile.json') )
+});
+
 function saveFile(data){
   var fs = require('fs');
 
-  fs.writeFile("./tmp/test", JSON.stringify(data, null, 2), function(err) {
+  fs.writeFile("profile.json", JSON.stringify(data, null, 2), function(err) {
       if(err) {
           return console.log(err);
       }
