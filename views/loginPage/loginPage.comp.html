@@ -1,0 +1,10 @@
+<h1>Bienvenido.</h1>
+<div id="nameInput" class="input-group-lg center-block helloInput">
+     <form class="form-signin" ng-submit="$ctrl.login()">
+        <span id="reauth-email" class="reauth-email"></span>
+        <input type="text" class="form-control" placeholder="username" ng-model="$ctrl.username" required autofocus>
+        <input type="password" ng-model="$ctrl.password" class="form-control" placeholder="Password" required>
+        
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Ingresar</button>
+    </form>
+</div>

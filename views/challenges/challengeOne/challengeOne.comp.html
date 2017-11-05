@@ -1,0 +1,110 @@
+<form ng-submit="$ctrl.sendResponse()">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Usuario de Twitter</label>
+    <input id="query" type="text" class="form-control" placeholder="Usuario de Twitter" ng-model="$ctrl.twitterUser"/>
+  </div>
+ 
+	<div class="form-group">
+		<label for="comment">Commentario</label>
+		<textarea class="form-control" rows="5" id="comment" ng-model="$ctrl.comment"></textarea>
+	</div>
+
+  <button type="submit" class="btn btn-primary" id="button-update">Enviar</button>
+</form>
+<input id="text-area"></input>
+
+<div class="social-feed-container"></div>
+
+
+<!-- Codebird.js - required for TWITTER -->
+<script src="codebird/codebird.js"></script>
+<!-- doT.js for rendering templates -->
+<script src="doT/doT.min.js"></script>
+<!-- Moment.js for showing "time ago" and/or "date"-->
+<script src="moment/min/moment.min.js"></script>
+<!-- Moment Locale to format the date to your language (eg. italian lang)-->
+<script src="moment/locale/es.js"></script>
+<!-- Social-feed js -->
+<script src="social-feed/js/jquery.socialfeed.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+        var updateFeed = function() {
+            var initialQuery = $('#query').val();
+            var initialQuery = '@'+initialQuery+','+'#'+initialQuery;
+            console.log( initialQuery);
+            initialQuery = initialQuery.replace(" ", "");
+            var queryTags = initialQuery.split(",");
+            try {
+			    $('.social-feed-container').socialfeed({
+                // FACEBOOK
+                facebook: {
+                    accounts: queryTags,
+                    limit: 30,
+                    access_token: '150849908413827|a20e87978f1ac491a0c4a721c961b68c'
+                },
+                // GOOGLEPLUS
+                google: {
+                    accounts: queryTags,
+                    limit: 30,
+                    access_token: 'AIzaSyDAelFmJhg6BSUbSLe8UT7s-G53tL4_KRg'
+                },
+                // Twitter
+                twitter: {
+                    accounts: queryTags,
+                    limit: 30,
+                    consumer_key: 'qzRXgkI7enflNJH1lWFvujT2P', // make sure to have your app read-only
+                    consumer_secret: '8e7E7gHuTwyDHw9lGQFO73FcUwz9YozT37lEvZulMq8FXaPl8O', // make sure to have your app read-only
+                },
+                // VKONTAKTE
+                vk: {
+                    accounts: queryTags,
+                    limit: 30,
+                    source: 'all'
+                },
+                // INSTAGRAM
+                instagram: {
+                    accounts: queryTags,
+                    limit: 30,
+                    client_id: '88b4730e0e2c4b2f8a09a6184af2e218',
+                    access_token: ''
+                },
+
+                // GENERAL SETTINGS
+                length: 200,
+                show_media: true,
+                template : "social-feed/template.html",
+                // Moderation function - if returns false, template will have class hidden
+                moderation: function(content) {
+                	if(content.text){
+                		if( content.text != 'undefined' )
+                			$('#text-area').val($('#text-area').val()+"|"+content.text); 
+                		return content.text.indexOf('porn') == -1;
+                	}else{
+                		true;
+                	}
+                },
+                //update_period: 5000,
+                // When all the posts are collected and displayed - this function is evoked
+                callback: function() {
+                    console.log('all posts are collected');
+                }
+            });
+			}
+			catch(err) {
+			    console.log( err );
+			}
+        };
+
+        updateFeed();
+        $('#button-update').click(function() {
+            //first, get rid of old data/posts.
+            $('.social-feed-container').html('');
+
+            //then load new posts
+            updateFeed();
+        });
+
+    });
+</script>
